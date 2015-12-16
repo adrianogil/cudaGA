@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <cfloat>
 
 // For the CUDA runtime routines (prefixed with "cuda_")
 #include <cuda_runtime.h>
@@ -141,6 +142,8 @@ main(void)
 
 	float *chromosome1, *chromosome2, *newChromosome1, *newChromosome2;
 
+	float bestFitness = FLT_MAX, bestFitnessOnGeneration = FLT_MAX;
+
 	for (int gen = 0; gen < MAX_NUMBER_OF_GENERATIONS; gen++)
 	{
 		RunGAIteration<<<1, POPULATION_SIZE>>>(population, fitness_values);
@@ -153,6 +156,23 @@ main(void)
 			fprintf(stderr, "Failed to launch RunGAIteration kernel (error code %s)!\n", cudaGetErrorString(err));
 			exit(EXIT_FAILURE);
 		}
+
+		// Get best fitness value
+		bestFitnessOnGeneration = FLT_MAX;
+		for (int i = 0; i < POPULATION_SIZE; i++)
+		{
+			if (fitness_values[i] < bestFitness)
+			{
+				bestFitness = fitness_values[i];
+			}
+
+			if (fitness_values[i] < bestFitnessOnGeneration)
+			{
+				bestFitnessOnGeneration = fitness_values[i];
+			}
+		}
+		printf("The best fitness value on generation %d is %.2f.\n", gen, bestFitnessOnGeneration);
+		printf("The best fitness value until now is %.2f.\n", gen, bestFitness);
 
 		/** Get new generation **/
 
