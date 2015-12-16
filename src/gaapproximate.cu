@@ -54,7 +54,7 @@ int rouletteWheel(float* fitness_values, double sum_fitness_values)
 
 	double chooseValue = RAND_01;
 
-	for (int i = 0; i < POPULATION_SIZE; i+=2)
+	for (int i = 0; i < POPULATION_SIZE; i++)
 	{
 		offsetSelection += (fitness_values[i] / sum_fitness_values);
 
@@ -175,7 +175,7 @@ main(void)
 			newChromosome2 = newGeneration + ((i+1)*GENOTYPE_SIZE);
 
 			// Crossover
-			if (rand() % 1 <= CROSSOVER_PROB)
+			if (RAND_01 <= CROSSOVER_PROB)
 			{
 				// Do Crossover
 				crossOver(chromosome1, chromosome2, newChromosome1, newChromosome2);
@@ -192,7 +192,7 @@ main(void)
 			mutate(newChromosome2);
 		}
 
-		for (int i = 0; i < POPULATION_MATRIX_SIZE; i+=2)
+		for (int i = 0; i < POPULATION_MATRIX_SIZE; i++)
 		{
 			population[i] = newGeneration[i];
 		}
