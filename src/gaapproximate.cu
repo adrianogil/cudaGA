@@ -1,7 +1,7 @@
 /**
  * GA Approximate: Try to approximate a simple function using Genetic Algorithm
  *
- */
+ **/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,9 +14,9 @@
 /**
  * Macros to configure experiment
  */
-#define POPULATION_SIZE 10
-#define GENOTYPE_SIZE 2
-#define MAX_NUMBER_OF_GENERATIONS 100
+#define POPULATION_SIZE 300
+#define GENOTYPE_SIZE 3
+#define MAX_NUMBER_OF_GENERATIONS 200
 #define CROSSOVER_PROB 0.8
 #define CROSSING_PROB 0.5
 #define MUTATION_PROB 0.1
@@ -113,8 +113,7 @@ __global__ void RunGAIteration(float *population, float *fitness_values)
 /**
  * Host main routine
  */
-int
-main(void)
+int main(void)
 {
 	// Error code to check return values for CUDA calls
 	cudaError_t err = cudaSuccess;
@@ -153,7 +152,8 @@ main(void)
 
 		if (err != cudaSuccess)
 		{
-			fprintf(stderr, "Failed to launch RunGAIteration kernel (error code %s)!\n", cudaGetErrorString(err));
+			fprintf(stderr, "Failed to launch RunGAIteration kernel (error code %s)!\n",
+					cudaGetErrorString(err));
 			exit(EXIT_FAILURE);
 		}
 
@@ -219,8 +219,8 @@ main(void)
 	}
 
 	// Verify each chromosome
-	for (int i = 0; i < POPULATION_SIZE; i++)
-		printf("Chromosome %d got fitness value of %.2f.\n", i, fitness_values[i]);
+	//	for (int i = 0; i < POPULATION_SIZE; i++)
+	//		printf("Chromosome %d got fitness value of %.2f.\n", i, fitness_values[i]);
 
 	free(newGeneration);
 	cudaFree(population);
