@@ -4,3 +4,6 @@
 *.ptx
 *.cubin
 *.fatbin
+/Debug/
+src/*.o
+src/gaapproximate
